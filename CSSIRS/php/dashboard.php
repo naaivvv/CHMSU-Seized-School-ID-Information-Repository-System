@@ -271,16 +271,19 @@ if (!isset($_SESSION['username'])) {
     </div>
 </div>
 <script>
-$(document).ready(function(){
-    // AJAX request to fetch department counts
+$(document).ready(function () {
+    // AJAX request to fetch department and course counts
     $.ajax({
         url: 'chart_data.php',
         type: 'GET',
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             // Prepare data for Chart.js
-            var departmentLabels = Object.keys(data);
-            var departmentData = Object.values(data);
+            var departmentLabels = Object.keys(data.departments);
+            var departmentData = Object.values(data.departments);
+
+            var courseLabels = Object.keys(data.courses);
+            var courseData = Object.values(data.courses);
 
             // Render the bar chart
             var ctx = document.getElementById('departmentChart').getContext('2d');
@@ -294,6 +297,12 @@ $(document).ready(function(){
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
+                    }, {
+                        label: 'Course Counts',
+                        data: courseData,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
                     }]
                 },
                 options: {
@@ -305,16 +314,30 @@ $(document).ready(function(){
                 }
             });
         },
-        error: function(error) {
-            console.error('Error fetching department data:', error);
+        error: function (error) {
+            console.error('Error fetching department and course data:', error);
         }
     });
 
-    // Rest of your existing script
-    $('.update-btn').click(function(){
-        // ...
-    });
+        $('.update-btn').click(function(){
+            var chmsuId = $(this).data('chmsu-id');
+            var name = $(this).closest('tr').find('td:eq(1)').text();
+            var department = $(this).closest('tr').find('td:eq(2)').text();
+            var course = $(this).closest('tr').find('td:eq(3)').text();
+            var address = $(this).closest('tr').find('td:eq(4)').text();
+            var remarks = $(this).closest('tr').find('td:eq(5)').text();
+
+            $('#update_chmsu_idnumber').val(chmsuId);
+            $('#update_name').val(name);
+            $('#update_department').val(department);
+            $('#update_course').val(course);
+            $('#update_address').val(address);
+            $('#update_remarks').val(remarks);
+        });
+
 });
+
+
 </script>
 </body>
 </html>
