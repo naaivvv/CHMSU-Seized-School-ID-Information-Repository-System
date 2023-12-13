@@ -12,7 +12,9 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-success navbar-custom">
@@ -34,6 +36,11 @@ if (!isset($_SESSION['username'])) {
             </ul>
         </div>
     </nav>
+    <div class="container mt-4 text-center">
+        <div class="chart-content mx-auto">
+            <canvas id="departmentChart" width="400" height="200"></canvas>
+        </div>
+    </div>
 <div class="container mt-4">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#insertModal">
             Insert Information
@@ -60,11 +67,59 @@ if (!isset($_SESSION['username'])) {
                     </div>
                     <div class="form-group">
                         <label for="department">Department</label>
-                        <input type="text" class="form-control" id="department" name="department">
+                        <select class="form-control" id="department" name="department">
+                            <option value="College of Arts and Sciences">College of Arts and Sciences</option>
+                            <option value="College of Business and Management Accountancy">College of Business and Management Accountancy</option>
+                            <option value="College of Computer Studies">College of Computer Studies</option>
+                            <option value="College of Criminal Justice">College of Criminal Justice</option>
+                            <option value="College of Engineering">College of Engineering</option>
+                            <option value="College of Education">College of Education</option>
+                            <option value="College of Fisheries">College of Fisheries</option>
+                            <option value="College of Industrial Technology">College of Industrial Technology</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="course">Course</label>
-                        <input type="text" class="form-control" id="course" name="course">
+                        <select class="form-control" id="course" name="course">
+                            <option value="Bachelor of Arts in English Language">Bachelor of Arts in English Language</option>
+                            <option value="Bachelor of Arts in Social Science">Bachelor of Arts in Social Science</option>
+                            <option value="Bachelor of Public Administration">Bachelor of Public Administration</option>
+                            <option value="Bachelor of Science in Applied Mathematics">Bachelor of Science in Applied Mathematics</option>
+                            <option value="Bachelor of Science in Psychology">Bachelor of Science in Psychology</option>
+                            <option value="Bachelor of Science in Accountancy">Bachelor of Science in Accountancy</option>
+                            <option value="Bachelor of Science in Business Administration major in Financial Management">Bachelor of Science in Business Administration major in Financial Management</option>
+                            <option value="Bachelor of Science in Entrepreneurship">Bachelor of Science in Entrepreneurship</option>
+                            <option value="Bachelor of Science in Hospitality Management">Bachelor of Science in Hospitality Management</option>
+                            <option value="Bachelor of Science in Management Accounting">Bachelor of Science in Management Accounting</option>
+                            <option value="Bachelor of Science in Office Administration">Bachelor of Science in Office Administration</option>
+                            <option value="Bachelor of Science in Information Systems">Bachelor of Science in Information Systems</option>
+                            <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
+                            <option value="Bachelor of Science in Criminology">Bachelor of Science in Criminology</option>
+                            <option value="Bachelor of Early Childhood Education">Bachelor of Early Childhood Education</option>
+                            <option value="Bachelor of Elementary Education">Bachelor of Elementary Education</option>
+                            <option value="Bachelor of Physical Education">Bachelor of Physical Education</option>
+                            <option value="Bachelor of Secondary Education with major in English">Bachelor of Secondary Education with major in English</option>
+                            <option value="Bachelor of Secondary Education with major in Filipino">Bachelor of Secondary Education with major in Filipino</option>
+                            <option value="Bachelor of Secondary Education with major in Mathematics">Bachelor of Secondary Education with major in Mathematics</option>
+                            <option value="Bachelor of Secondary Education with major in Science">Bachelor of Secondary Education with major in Science</option>
+                            <option value="Bachelor of Special Needs Education">Bachelor of Special Needs Education</option>
+                            <option value="Bachelor of Technology and Livelihood Education major in Home Economics">Bachelor of Technology and Livelihood Education major in Home Economics</option>
+                            <option value="Bachelor of Technology and Livelihood Education major in Home Industrial Arts">Bachelor of Technology and Livelihood Education major in Home Industrial Arts</option>
+                            <option value="Bachelor of Technical Vocational Teacher Education major in Electrical Technology">Bachelor of Technical Vocational Teacher Education major in Electrical Technology</option>
+                            <option value="Bachelor of Technical Vocational Teacher Education major in Electronics Technology">Bachelor of Technical Vocational Teacher Education major in Electronics Technology</option>
+                            <option value="Bachelor of Science in Civil Engineering">Bachelor of Science in Civil Engineering</option>
+                            <option value="Bachelor of Science in Computer Engineering">Bachelor of Science in Computer Engineering</option>
+                            <option value="Bachelor of Science in Electronics Engineering">Bachelor of Science in Electronics Engineering</option>
+                            <option value="Bachelor of Science in Industrial Technology major in Architectural Drafting Technology">Bachelor of Science in Industrial Technology major in Architectural Drafting Technology</option>
+                            <option value="Bachelor of Science in Industrial Technology major in Architectural Automotive Technology">Bachelor of Science in Industrial Technology major in Architectural Automotive Technology</option>
+                            <option value="Bachelor of Science in Industrial Technology major in Architectural Computer Technology">Bachelor of Science in Industrial Technology major in Architectural Computer Technology</option>
+                            <option value="Bachelor of Science in Industrial Technology major in Architectural Electrical Technology">Bachelor of Science in Industrial Technology major in Architectural Electrical Technology</option>
+                            <option value="Bachelor of Science in Industrial Technology major in Architectural Electronics Technology">Bachelor of Science in Industrial Technology major in Architectural Electronics Technology</option>
+                            <option value="Bachelor of Science in Industrial Technology major in Architectural Fashion and Apparel Technology">Bachelor of Science in Industrial Technology major in Architectural Fashion and Apparel Technology</option>
+                            <option value="Bachelor of Science in Industrial Technology major in Architectural Food Trades Technology">Bachelor of Science in Industrial Technology major in Architectural Food Trades Technology</option>
+                            <option value="Bachelor of Science in Industrial Technology major in Architectural Mechanical Technology">Bachelor of Science in Industrial Technology major in Architectural Mechanical Technology</option>
+                            <option value="Bachelor of Science in Industrial Technology major in Refrigeration and Air-conditioning Technology">Bachelor of Science in Industrial Technology major in Refrigeration and Air-conditioning Technology</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="address">Address</label>
@@ -101,12 +156,60 @@ if (!isset($_SESSION['username'])) {
                                     <input type="text" class="form-control" id="update_name" name="name">
                                 </div>
                                 <div class="form-group">
-                                    <label for="update_department">Department</label>
-                                    <input type="text" class="form-control" id="update_department" name="department">
+                                    <label for="department">Department</label>
+                                    <select class="form-control" id="department" name="department">
+                                        <option value="College of Arts and Sciences">College of Arts and Sciences</option>
+                                        <option value="College of Business and Management Accountancy">College of Business and Management Accountancy</option>
+                                        <option value="College of Computer Studies">College of Computer Studies</option>
+                                        <option value="College of Criminal Justice">College of Criminal Justice</option>
+                                        <option value="College of Engineering">College of Engineering</option>
+                                        <option value="College of Education">College of Education</option>
+                                        <option value="College of Fisheries">College of Fisheries</option>
+                                        <option value="College of Industrial Technology">College of Industrial Technology</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="update_course">Course</label>
-                                    <input type="text" class="form-control" id="update_course" name="course">
+                                    <label for="course">Course</label>
+                                    <select class="form-control" id="course" name="course">
+                                        <option value="Bachelor of Arts in English Language">Bachelor of Arts in English Language</option>
+                                        <option value="Bachelor of Arts in Social Science">Bachelor of Arts in Social Science</option>
+                                        <option value="Bachelor of Public Administration">Bachelor of Public Administration</option>
+                                        <option value="Bachelor of Science in Applied Mathematics">Bachelor of Science in Applied Mathematics</option>
+                                        <option value="Bachelor of Science in Psychology">Bachelor of Science in Psychology</option>
+                                        <option value="Bachelor of Science in Accountancy">Bachelor of Science in Accountancy</option>
+                                        <option value="Bachelor of Science in Business Administration major in Financial Management">Bachelor of Science in Business Administration major in Financial Management</option>
+                                        <option value="Bachelor of Science in Entrepreneurship">Bachelor of Science in Entrepreneurship</option>
+                                        <option value="Bachelor of Science in Hospitality Management">Bachelor of Science in Hospitality Management</option>
+                                        <option value="Bachelor of Science in Management Accounting">Bachelor of Science in Management Accounting</option>
+                                        <option value="Bachelor of Science in Office Administration">Bachelor of Science in Office Administration</option>
+                                        <option value="Bachelor of Science in Information Systems">Bachelor of Science in Information Systems</option>
+                                        <option value="Bachelor of Science in Information Technology">Bachelor of Science in Information Technology</option>
+                                        <option value="Bachelor of Science in Criminology">Bachelor of Science in Criminology</option>
+                                        <option value="Bachelor of Early Childhood Education">Bachelor of Early Childhood Education</option>
+                                        <option value="Bachelor of Elementary Education">Bachelor of Elementary Education</option>
+                                        <option value="Bachelor of Physical Education">Bachelor of Physical Education</option>
+                                        <option value="Bachelor of Secondary Education with major in English">Bachelor of Secondary Education with major in English</option>
+                                        <option value="Bachelor of Secondary Education with major in Filipino">Bachelor of Secondary Education with major in Filipino</option>
+                                        <option value="Bachelor of Secondary Education with major in Mathematics">Bachelor of Secondary Education with major in Mathematics</option>
+                                        <option value="Bachelor of Secondary Education with major in Science">Bachelor of Secondary Education with major in Science</option>
+                                        <option value="Bachelor of Special Needs Education">Bachelor of Special Needs Education</option>
+                                        <option value="Bachelor of Technology and Livelihood Education major in Home Economics">Bachelor of Technology and Livelihood Education major in Home Economics</option>
+                                        <option value="Bachelor of Technology and Livelihood Education major in Home Industrial Arts">Bachelor of Technology and Livelihood Education major in Home Industrial Arts</option>
+                                        <option value="Bachelor of Technical Vocational Teacher Education major in Electrical Technology">Bachelor of Technical Vocational Teacher Education major in Electrical Technology</option>
+                                        <option value="Bachelor of Technical Vocational Teacher Education major in Electronics Technology">Bachelor of Technical Vocational Teacher Education major in Electronics Technology</option>
+                                        <option value="Bachelor of Science in Civil Engineering">Bachelor of Science in Civil Engineering</option>
+                                        <option value="Bachelor of Science in Computer Engineering">Bachelor of Science in Computer Engineering</option>
+                                        <option value="Bachelor of Science in Electronics Engineering">Bachelor of Science in Electronics Engineering</option>
+                                        <option value="Bachelor of Science in Industrial Technology major in Architectural Drafting Technology">Bachelor of Science in Industrial Technology major in Architectural Drafting Technology</option>
+                                        <option value="Bachelor of Science in Industrial Technology major in Architectural Automotive Technology">Bachelor of Science in Industrial Technology major in Architectural Automotive Technology</option>
+                                        <option value="Bachelor of Science in Industrial Technology major in Architectural Computer Technology">Bachelor of Science in Industrial Technology major in Architectural Computer Technology</option>
+                                        <option value="Bachelor of Science in Industrial Technology major in Architectural Electrical Technology">Bachelor of Science in Industrial Technology major in Architectural Electrical Technology</option>
+                                        <option value="Bachelor of Science in Industrial Technology major in Architectural Electronics Technology">Bachelor of Science in Industrial Technology major in Architectural Electronics Technology</option>
+                                        <option value="Bachelor of Science in Industrial Technology major in Architectural Fashion and Apparel Technology">Bachelor of Science in Industrial Technology major in Architectural Fashion and Apparel Technology</option>
+                                        <option value="Bachelor of Science in Industrial Technology major in Architectural Food Trades Technology">Bachelor of Science in Industrial Technology major in Architectural Food Trades Technology</option>
+                                        <option value="Bachelor of Science in Industrial Technology major in Architectural Mechanical Technology">Bachelor of Science in Industrial Technology major in Architectural Mechanical Technology</option>
+                                        <option value="Bachelor of Science in Industrial Technology major in Refrigeration and Air-conditioning Technology">Bachelor of Science in Industrial Technology major in Refrigeration and Air-conditioning Technology</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="update_address">Address</label>
@@ -151,7 +254,7 @@ if (!isset($_SESSION['username'])) {
                 echo "<td>" . $row["course"]. "</td>";
                 echo "<td>" . $row["address"]. "</td>";
                 echo "<td>" . $row["remarks"]. "</td>";
-                echo '<td>
+                echo '<td width="200px">
                         <button class="btn btn-primary update-btn" data-toggle="modal" data-target="#updateModal" data-chmsu-id="' . $row["chmsu_idnumber"] . '">Update</button>&nbsp;
                         <form method="post" action="delete.php" style="display:inline;">
                             <input type="hidden" name="chmsu_idnumber" value="' . $row["chmsu_idnumber"] . '">
@@ -168,24 +271,50 @@ if (!isset($_SESSION['username'])) {
     </div>
 </div>
 <script>
+$(document).ready(function(){
+    // AJAX request to fetch department counts
+    $.ajax({
+        url: 'chart_data.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Prepare data for Chart.js
+            var departmentLabels = Object.keys(data);
+            var departmentData = Object.values(data);
 
-    $(document).ready(function(){
-        $('.update-btn').click(function(){
-            var chmsuId = $(this).data('chmsu-id');
-            var name = $(this).closest('tr').find('td:eq(1)').text();
-            var department = $(this).closest('tr').find('td:eq(2)').text();
-            var course = $(this).closest('tr').find('td:eq(3)').text();
-            var address = $(this).closest('tr').find('td:eq(4)').text();
-            var remarks = $(this).closest('tr').find('td:eq(5)').text();
-
-            $('#update_chmsu_idnumber').val(chmsuId);
-            $('#update_name').val(name);
-            $('#update_department').val(department);
-            $('#update_course').val(course);
-            $('#update_address').val(address);
-            $('#update_remarks').val(remarks);
-        });
+            // Render the bar chart
+            var ctx = document.getElementById('departmentChart').getContext('2d');
+            var departmentChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: departmentLabels,
+                    datasets: [{
+                        label: 'Department Counts',
+                        data: departmentData,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        },
+        error: function(error) {
+            console.error('Error fetching department data:', error);
+        }
     });
+
+    // Rest of your existing script
+    $('.update-btn').click(function(){
+        // ...
+    });
+});
 </script>
 </body>
 </html>
