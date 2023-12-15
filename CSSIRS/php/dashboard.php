@@ -272,7 +272,6 @@ if (!isset($_SESSION['username'])) {
 </div>
 <script>
 $(document).ready(function () {
-    // AJAX request to fetch department and course counts
     $.ajax({
         url: 'chart_data.php',
         type: 'GET',
